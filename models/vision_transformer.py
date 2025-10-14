@@ -41,7 +41,7 @@ class VisionTransformer(nn.Module):
         use_sdp_kernel=use_sdp_kernel)
       for _ in range(config.depth)
     ])
-    self.norm = nn.LayerNorm(config.dim, eps=config.norm_eps)
+    self.norm = nn.LayerNorm(config.dim, eps=config.norm_eps, bias=config.bias)
 
     for name, module in self.named_modules():
       if isinstance(module, (nn.Linear, nn.Conv1d)):

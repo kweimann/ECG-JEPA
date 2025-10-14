@@ -18,7 +18,7 @@ class Block(nn.Module):
       use_sdp_kernel=True,
   ):
     super().__init__()
-    self.norm1 = nn.LayerNorm(dim, eps=eps)
+    self.norm1 = nn.LayerNorm(dim, eps=eps, bias=bias)
     self.attn = Attention(
       dim,
       num_heads=num_heads,
@@ -28,7 +28,7 @@ class Block(nn.Module):
       proj_dropout=dropout,
       use_sdp_kernel=use_sdp_kernel)
     self.attn_ls = LayerScale(dim, eps=layer_scale_eps) if layer_scale_eps else nn.Identity()
-    self.norm2 = nn.LayerNorm(dim, eps=eps)
+    self.norm2 = nn.LayerNorm(dim, eps=eps, bias=bias)
     mlp_hidden_dim = int(dim * mlp_ratio)
     self.mlp = MLP(
       in_features=dim,
@@ -55,14 +55,14 @@ class CrossAttentionBlock(nn.Module):
       use_sdp_kernel=True,
   ):
     super().__init__()
-    self.norm1 = nn.LayerNorm(dim, eps=eps)
+    self.norm1 = nn.LayerNorm(dim, eps=eps, bias=bias)
     self.xattn = CrossAttention(
       dim,
       num_heads=num_heads,
       qkv_bias=qkv_bias,
       bias=bias,
       use_sdp_kernel=use_sdp_kernel)
-    self.norm2 = nn.LayerNorm(dim, eps=eps)
+    self.norm2 = nn.LayerNorm(dim, eps=eps, bias=bias)
     mlp_hidden_dim = int(dim * mlp_ratio)
     self.mlp = MLP(
       in_features=dim,

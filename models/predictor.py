@@ -33,7 +33,7 @@ class Predictor(nn.Module):
         use_sdp_kernel=use_sdp_kernel)
       for _ in range(config.pred_depth)
     ])
-    self.norm = nn.LayerNorm(config.pred_dim, eps=config.norm_eps)
+    self.norm = nn.LayerNorm(config.pred_dim, eps=config.norm_eps, bias=config.bias)
     self.proj = nn.Linear(config.pred_dim, config.dim, bias=config.bias)
 
     for name, module in self.named_modules():
