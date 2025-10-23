@@ -1,6 +1,8 @@
+import math
+
 import torch
 from torch import nn
-import math
+
 import configs
 from models.modules import PatchEmbedding, Block
 from models.utils import get_1d_pos_embed, apply_mask
