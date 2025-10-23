@@ -1,3 +1,5 @@
+import math
+
 import torch
 from torch import nn
 
@@ -38,7 +40,11 @@ class Predictor(nn.Module):
 
     for name, module in self.named_modules():
       if isinstance(module, nn.Linear):
-        nn.init.xavier_uniform_(module.weight)
+        if name.endswith('mlp.fc2') or name.endswith('attn.proj'):
+          # residual projections are initialized with scaled std
+          nn.init.trunc_normal_(module.weight, mean=0., std=0.02 / math.sqrt(2 * config.depth))
+        else:
+          nn.init.trunc_normal_(module.weight, mean=0., std=0.02)
         if module.bias is not None:
           nn.init.zeros_(module.bias)
       elif isinstance(module, nn.LayerNorm):

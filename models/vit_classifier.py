@@ -30,7 +30,7 @@ class ViTClassifier(nn.Module):
 
     for name, module in self.named_modules(memo=set(encoder.modules())):
       if isinstance(module, nn.Linear):
-        nn.init.xavier_uniform_(module.weight)
+        nn.init.trunc_normal_(module.weight, mean=0., std=0.02)
         if module.bias is not None:
           nn.init.zeros_(module.bias)
       elif isinstance(module, nn.LayerNorm):
